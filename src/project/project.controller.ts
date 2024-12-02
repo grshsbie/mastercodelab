@@ -1,6 +1,14 @@
 // src/project/project.controller.ts
 
-import { Controller, Post, Body, Param, Get, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Get,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { Types } from 'mongoose';
 
@@ -16,6 +24,11 @@ export class ProjectController {
     @Body('image') image: string,
   ) {
     return this.projectService.createProject(new Types.ObjectId(owner), title, description, image);
+  }
+
+  @Get('/searchByName')
+  async searchProjects(@Query('query') query: string) {
+    return this.projectService.searchProjects(query);
   }
 
   @Patch(':id/add-step')
@@ -35,4 +48,6 @@ export class ProjectController {
   async getAllProjects() {
     return this.projectService.getAllProjects();
   }
+
+
 }
