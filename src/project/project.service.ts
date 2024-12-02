@@ -28,7 +28,7 @@ Headers:
 Body:
 {
   "prompt": "Create a hello world app",
-  "code": "console.log('Hello World')",
+  "code": "console.warn('Hello World')",
   "packages": ["express", "dotenv"],
   "directoryStructure": "./src\n  index.js"
 }
@@ -57,6 +57,7 @@ export class ProjectService {
     description: string,
     image: string,
   ): Promise<Project> {
+    console.log('Creating new project:', { owner, title, description });
     const newProject = new this.projectModel({
       owner,
       title,
@@ -64,8 +65,9 @@ export class ProjectService {
       image,
     });
 
-
-    return newProject.save();
+    const savedProject = await newProject.save();
+    console.log('Project created with ID:', savedProject._id);
+    return savedProject;
   }
 
   async addStep(
